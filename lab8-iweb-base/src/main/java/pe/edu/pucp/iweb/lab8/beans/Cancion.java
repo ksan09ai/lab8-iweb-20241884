@@ -83,6 +83,10 @@ public class Cancion {
      *          (354 segundos -> "5:54", 200 segundos -> "3:20").
      */
     public String getDuracionFormateada() {
-        return null;
+
+        int minutos = getDuracionSeg() / 60;
+        int segundos = getDuracionSeg() % 60;
+
+        return " " + minutos + ": " + segundos;
     }
 }
