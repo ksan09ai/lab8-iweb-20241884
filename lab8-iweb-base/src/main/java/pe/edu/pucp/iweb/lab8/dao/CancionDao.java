@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import pe.edu.pucp.iweb.lab8.beans.Cancion;
 
-public class CancionDao { // TODO: heredar de BaseDao
+public class CancionDao extends BaseDao { // TODO: heredar de BaseDao
 
     /**
      * Ejercicio 2: todas las canciones (con el nombre de su género, JOIN),
