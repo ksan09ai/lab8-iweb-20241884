@@ -1,5 +1,9 @@
 package pe.edu.pucp.iweb.lab8.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import pe.edu.pucp.iweb.lab8.beans.Cancion;
@@ -10,9 +14,37 @@ public class CancionDao extends BaseDao { // TODO: heredar de BaseDao
      * Ejercicio 2: todas las canciones (con el nombre de su género, JOIN),
      * ordenadas por título. Use PreparedStatement.
      */
-    public ArrayList<Cancion> listar() {
+    public ArrayList<Cancion> listar() throws SQLException {
         // TODO
-        return new ArrayList<>();
+
+        ArrayList<Cancion> listaCancion = new ArrayList<>();
+        Connection conexion = getConnection();
+
+        String sql = """
+                SELECT g.nombre, c.titulo
+                FROM genero g\s
+                INNER JOIN cancion c ON g.idgenero = c.idgenero
+                ORDER BY c.titulo
+                """;
+
+        try {
+            PreparedStatement ps = conexion.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                String nombreGenero = rs.getString("nombre");
+                String titulo = rs.getString("titulo");
+
+                Cancion cancion = new Cancion(nombreGenero,titulo);
+                listaCancion.add(cancion);
+
+            }
+        } catch (SQLException ex) {
+            System.out.println("SQLException: " + ex.getMessage());
+        }
+        return listaCancion;
+
     }
 
     /**
@@ -20,7 +52,9 @@ public class CancionDao extends BaseDao { // TODO: heredar de BaseDao
      */
     public Cancion buscarPorId(int idCancion) {
         // TODO
-        return null;
+
+        Cancion cancion = null;
+        return cancion;
     }
 
     /**

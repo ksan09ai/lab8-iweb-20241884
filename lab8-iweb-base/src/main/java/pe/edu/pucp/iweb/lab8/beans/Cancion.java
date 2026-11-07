@@ -30,6 +30,9 @@ public class Cancion {
         this.genero = genero;
     }
 
+    public Cancion(String nombreGenero, String titulo) {
+    }
+
     public int getIdCancion() {
         return idCancion;
     }
