@@ -1,12 +1,18 @@
 package pe.edu.pucp.iweb.lab8.servlets;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import pe.edu.pucp.iweb.lab8.beans.Cancion;
+import pe.edu.pucp.iweb.lab8.beans.Genero;
+import pe.edu.pucp.iweb.lab8.dao.CancionDao;
+import pe.edu.pucp.iweb.lab8.dao.GeneroDao;
 
 @WebServlet(name = "CancionServlet", urlPatterns = {"/canciones"})
 public class CancionServlet extends HttpServlet {
@@ -28,7 +34,11 @@ public class CancionServlet extends HttpServlet {
                 editar(request, response);
                 break;
             default:
-                listar(request, response);
+                try {
+                    listar(request, response);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
                 break;
         }
     }
@@ -62,9 +72,17 @@ public class CancionServlet extends HttpServlet {
 
     /** Ejercicio 2: listado. */
     private void listar(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
 
         // TODO: obtener las canciones (CancionDao), enviarlas a la vista,
+
+
+        CancionDao cancionDao = new CancionDao();
+        ArrayList<Cancion> listaCanciones = cancionDao.listar();
+        request.setAttribute("listaCanciones", listaCanciones);
+
+        ArrayList<Genero> listaGeneros = new ArrayList<>();
+        request.setAttribute("listaGeneros", listaGeneros);
 
         request.getRequestDispatcher("listar.jsp").forward(request, response);
     }
@@ -75,7 +93,18 @@ public class CancionServlet extends HttpServlet {
 
         // TODO: enviar la lista de géneros (GeneroDao) a la vista
 
-        request.getRequestDispatcher("form.jsp").forward(request, response);
+        GeneroDao generoDao = new GeneroDao();
+
+        try{
+            ArrayList<Genero> listGeneros = generoDao.listar();
+            request.setAttribute("listGeneros", listGeneros);
+
+            request.getRequestDispatcher("registrarCancion.jsp").forward(request, response);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     /** Ejercicio 2: formulario cargado con los datos de la canción (parámetro id). */
@@ -83,6 +112,24 @@ public class CancionServlet extends HttpServlet {
             throws ServletException, IOException {
 
         // TODO: buscar la canción, enviar canción y géneros a la vista.
+
+        int idCancion = Integer.parseInt(request.getParameter("idCancion"));
+
+        CancionDao cancionDao = new CancionDao();
+        GeneroDao generoDao = new GeneroDao();
+
+        try {
+
+
+
+            request.getRequestDispatcher("editarCancion.jsp")
+                    .forward(request, response);
+
+
+        } catch (SQLException e) {
+            throw new ServletException(e);
+        }
+
 
         request.getRequestDispatcher("form.jsp").forward(request, response);
     }
