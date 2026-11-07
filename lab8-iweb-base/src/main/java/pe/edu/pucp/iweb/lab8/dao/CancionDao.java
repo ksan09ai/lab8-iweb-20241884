@@ -52,9 +52,7 @@ public class CancionDao extends BaseDao { // TODO: heredar de BaseDao
      */
     public Cancion buscarPorId(int idCancion) {
         // TODO
-
-        Cancion cancion = null;
-        return cancion;
+        return null;
     }
 
     /**

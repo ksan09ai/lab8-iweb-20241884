@@ -99,7 +99,7 @@ public class CancionServlet extends HttpServlet {
             ArrayList<Genero> listGeneros = generoDao.listar();
             request.setAttribute("listGeneros", listGeneros);
 
-            request.getRequestDispatcher("registrarCancion.jsp").forward(request, response);
+            request.getRequestDispatcher("form.jsp").forward(request, response);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -120,18 +120,24 @@ public class CancionServlet extends HttpServlet {
 
         try {
 
+            Cancion cancion = cancionDao.buscarPorId(idCancion);
+
+            if (cancion == null) {
+                response.sendError(404, "Equipo no encontrado");
+                return;
+            }
+
+            request.setAttribute("cancion", cancion);
+            request.setAttribute("listaCanciones", cancionDao.listar());
 
 
-            request.getRequestDispatcher("editarCancion.jsp")
+            request.getRequestDispatcher("form.jsp")
                     .forward(request, response);
-
 
         } catch (SQLException e) {
             throw new ServletException(e);
         }
 
-
-        request.getRequestDispatcher("form.jsp").forward(request, response);
     }
 
     /** Ejercicio 2: POST crear. */
@@ -141,6 +147,10 @@ public class CancionServlet extends HttpServlet {
         // TODO: leer parámetros, validar (título y artista no vacíos, duración > 0,
         //         año entre 1900 y 2026), insertar y redirigir al listado (Post/Redirect/Get).
         //         Si hay error: volver al formulario conservando lo escrito.
+
+
+
+
     }
 
     /** Ejercicio 2: POST actualizar. */

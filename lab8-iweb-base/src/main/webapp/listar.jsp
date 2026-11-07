@@ -28,9 +28,22 @@
     <%-- TODO: una fila por canción, con el enlace Editar
          (canciones?action=editar&id=X) y, en el Ejercicio 4a, el enlace Eliminar
          (canciones?action=confirmar&id=X) --%>
+
+        <c:forEach var="cancion" items="${listaCanciones}">
+            <tr>
+                <td>${cancion.titulo}</td>
+                <td>${cancion.artista}</td>
+                <td>${cancion.genero.nombre}</td>
+                <td>${cancion.anio}</td>
+            </tr>
+
+        </c:forEach>
+
+
     </tbody>
 </table>
 
 <%-- TODO: "Total de canciones: N" y "Duración total: m:ss" --%>
 </body>
 </html>
+
